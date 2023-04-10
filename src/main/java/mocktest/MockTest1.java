@@ -13,52 +13,28 @@ public class MockTest1 {
 
     }
 
-    public static int flippingMatrix(int queries, List<List<Integer>> matrix) {
+    public static int flippingMatrix(List<List<Integer>> matrix) {
         // Write your code here
         int n = matrix.size()/2;
 
         final int[] sum = {sumQuadrant(matrix, n)};
 
         //flip columns
-        IntStream.range(0, matrix.size()).forEach(value -> {
-            int columnIndex = value;
-            newMatrix = flipColumn(matrix, columnIndex);
-            updateSumIfBigger(n, sum);
-//            newMatrix = flipRow(matrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
-//            newMatrix = flipColumn(newMatrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
+        IntStream.range(0, matrix.size()).forEach(columnIndex -> {
+            if (shouldFlipColumn(matrix, columnIndex)) {
+                newMatrix = flipColumn(matrix, columnIndex);
+                updateSumIfBigger(n, sum);
+            }
         });
         System.out.println(sum[0]);
 
-        IntStream.range(0, 3).forEach(value -> {
-            int rowIndex = value;
-            newMatrix = flipRow(matrix, rowIndex);
-            System.out.println(sum[0]);
-            updateSumIfBigger(n, sum);
-            System.out.println(sum[0]);
-
-//            newMatrix = flipRow(matrix, rowIndex);
-//            System.out.println(sum[0]);
-//            updateSumIfBigger(n, sum);
-//            System.out.println(sum[0]);
-
-
-//            if (!updateSumIfBigger(n, sum)) {
-//                newMatrix = flipRow(matrix, rowIndex);
-//            }
-//            newMatrix = flipRow(matrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
-//            newMatrix = flipColumn(newMatrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
+        //flip rows
+        IntStream.range(0, matrix.size()).forEach(rowIndex -> {
+            if (shouldFlipRow(matrix, rowIndex)) {
+                newMatrix = flipRow(matrix, rowIndex);
+                updateSumIfBigger(n, sum);
+            }
         });
-
-//        IntStream.range(0, 200).forEach(value -> {
-//            newMatrix = flipColumn(matrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
-//            newMatrix = flipRow(newMatrix, new Random().nextInt(matrix.size()));
-//            updateSumIfBigger(n, sum);
-//        });
         return sum[0];
     }
 
@@ -71,6 +47,20 @@ public class MockTest1 {
         return false;
     }
 
+    private static boolean shouldFlipColumn(List<List<Integer>> matrix, int columnIndex) {
+        int sumFirstHalf = 0;
+        for (int i = 0; i < matrix.size()/2; i++) {
+            sumFirstHalf += matrix.get(i).get(columnIndex);
+        }
+        int sumSecondHalf = 0;
+        for (int i = matrix.size()/2; i < matrix.size(); i++) {
+            sumSecondHalf += matrix.get(i).get(columnIndex);
+        }
+        if (sumSecondHalf > sumFirstHalf) {
+            return true;
+        } else return matrix.get(matrix.size() - 1).get(columnIndex) > matrix.get(0).get(columnIndex);
+    }
+
     private static List<List<Integer>> flipColumn(List<List<Integer>> matrix, int columnIndex) {
         List<List<Integer>> newMatrix = new ArrayList<>(matrix.size());
         newMatrix.addAll(matrix);
@@ -80,6 +70,21 @@ public class MockTest1 {
             newMatrix.get(newMatrix.size()-i-1).set(columnIndex, temp);
         }
         return newMatrix;
+    }
+
+    private static boolean shouldFlipRow(List<List<Integer>> matrix, int rowIdx) {
+        var sumOfFirstHalf = 0;
+        for (int i = 0; i < matrix.size() / 2; i++) {
+            sumOfFirstHalf += matrix.get(rowIdx).get(i);
+        }
+
+        var sumOfSecondHalf = 0;
+        for (int i = matrix.size() / 2; i < matrix.size(); i++) {
+            sumOfSecondHalf += matrix.get(rowIdx).get(i);
+        }
+        if (sumOfSecondHalf > sumOfFirstHalf) {
+            return true;
+        } else return matrix.get(rowIdx).get(matrix.size() - 1) > matrix.get(rowIdx).get(0);
     }
 
     private static List<List<Integer>> flipRow(List<List<Integer>> matrix, int rowIdx) {
@@ -109,8 +114,7 @@ public class MockTest1 {
         matrix.add(1, new ArrayList<>(Arrays.asList(3,4,1,1)));
         matrix.add(2, new ArrayList<>(Arrays.asList(1,1,3,4)));
         matrix.add(3, new ArrayList<>(Arrays.asList(3,4,1,1)));
-        int queries = 55;
-        int sum = flippingMatrix(queries, matrix);
+        int sum = flippingMatrix(matrix);
         System.out.println(sum);
     }
 }
