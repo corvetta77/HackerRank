@@ -1,11 +1,11 @@
 package mocktest;
 
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public class MockTest1 {
-
-    private static List<List<Integer>> newMatrix;
 
     public static int findMedian(List<Integer> arr) {
         arr.sort(Comparator.naturalOrder());
