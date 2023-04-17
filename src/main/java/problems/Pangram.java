@@ -1,3 +1,5 @@
+package problems;
+
 import java.util.regex.Pattern;
 
 public class Pangram {
