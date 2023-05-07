@@ -2,7 +2,7 @@ package language;
 
 import java.util.*;
 
-public class Solution {
+public class QueueAndStack {
     // Write your code here.
     private List<Character> queue = new LinkedList<>();
     private List<Character> stack = new LinkedList<>();
@@ -17,7 +17,7 @@ public class Solution {
         char[] s = input.toCharArray();
 
         // Create a Solution object:
-        Solution p = new Solution();
+        QueueAndStack p = new QueueAndStack();
 
         // Enqueue/Push all chars to their respective data structures:
         for (char c : s) {
